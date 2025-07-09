@@ -1,0 +1,309 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Global Base Styles - Mobile First */
+@layer base {
+  /* Root font size and typography */
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Focus styles for accessibility */
+  *:focus {
+    outline: 2px solid theme('colors.blue.500');
+    outline-offset: 2px;
+  }
+
+  /* Remove default button styles - only for unstyled buttons */
+  button:not([class*="btn"]):not([class*="button"]) {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  /* Input field base styles - only for unstyled inputs */
+  input[type="text"]:not([class]),
+  input[type="email"]:not([class]),
+  textarea:not([class]) {
+    appearance: none;
+    background-color: transparent;
+    border: 1px solid theme('colors.gray.300');
+    border-radius: theme('borderRadius.lg');
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: theme('colors.gray.900');
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+
+  input[type="text"]:not([class]):focus,
+  input[type="email"]:not([class]):focus,
+  textarea:not([class]):focus {
+    border-color: theme('colors.blue.500');
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Responsive typography scaling */
+  h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  /* Tablet and up */
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 2.25rem;
+    }
+
+    h2 {
+      font-size: 1.875rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* Desktop and up */
+  @media (min-width: 1024px) {
+    h1 {
+      font-size: 3rem;
+    }
+
+    h2 {
+      font-size: 2.25rem;
+    }
+
+    h3 {
+      font-size: 1.875rem;
+    }
+  }
+}
+
+/* Component Layer - Reusable component styles */
+@layer components {
+  /* Todo App Container */
+  .todo-container {
+    @apply max-w-2xl mx-auto px-4 py-6;
+  }
+
+  /* Todo Card Base */
+  .todo-card {
+    @apply bg-white rounded-xl shadow-todo border border-gray-200 transition-shadow duration-200;
+  }
+
+  .todo-card:hover {
+    @apply shadow-todo-hover;
+  }
+
+  /* Button Variants */
+  .btn-primary {
+    @apply bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-success {
+    @apply bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-danger {
+    @apply bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply hover:bg-gray-100 text-gray-600 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Icon Button */
+  .btn-icon {
+    @apply p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+  }
+
+  /* Input Groups */
+  .input-group {
+    @apply flex gap-2 items-center;
+  }
+
+  .input-group input {
+    @apply flex-1;
+  }
+
+  /* Filter Tabs */
+  .filter-tabs {
+    @apply flex gap-1 p-1 bg-gray-100 rounded-lg;
+  }
+
+  .filter-tab {
+    @apply px-3 py-1.5 text-sm font-medium rounded-md transition-colors duration-200 cursor-pointer;
+  }
+
+  .filter-tab.active {
+    @apply bg-white text-blue-500 shadow-sm;
+  }
+
+  .filter-tab:not(.active) {
+    @apply text-gray-600 hover:text-gray-900 hover:bg-gray-50;
+  }
+
+  /* Todo Item Styles */
+  .todo-item {
+    @apply flex items-center gap-3 p-4 border-b border-gray-100 last:border-b-0;
+  }
+
+  .todo-item.completed {
+    @apply opacity-60;
+  }
+
+  .todo-checkbox {
+    @apply w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center cursor-pointer transition-colors duration-200;
+  }
+
+  .todo-checkbox.checked {
+    @apply bg-green-500 border-green-500;
+  }
+
+  .todo-text {
+    @apply flex-1 text-gray-900 transition-colors duration-200;
+  }
+
+  .todo-text.completed {
+    @apply line-through text-gray-500;
+  }
+
+  /* Empty State */
+  .empty-state {
+    @apply text-center py-12 text-gray-500;
+  }
+
+  /* Loading State */
+  .loading-spinner {
+    @apply inline-block w-4 h-4 border-2 border-gray-200 border-t-gray-600 rounded-full animate-spin;
+  }
+
+  /* Mobile-specific styles */
+  @media (max-width: 767px) {
+    .todo-container {
+      @apply px-3 py-4;
+    }
+
+    .todo-card {
+      @apply rounded-lg shadow-sm;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-success,
+    .btn-danger,
+    .btn-ghost {
+      @apply py-2.5 px-4 text-sm;
+    }
+
+    .filter-tab {
+      @apply px-2 py-1 text-xs;
+    }
+
+    .todo-item {
+      @apply p-3 gap-2;
+    }
+  }
+}
+
+/* Utility Layer - Custom utilities */
+@layer utilities {
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.3s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  .animate-bounce-soft {
+    animation: bounceSoft 0.6s ease-in-out;
+  }
+
+  /* Touch-friendly tap targets */
+  .tap-target {
+    @apply min-w-[44px] min-h-[44px] flex items-center justify-center;
+  }
+
+  /* Truncate text with ellipsis */
+  .truncate-multiline {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Safe area padding for mobile */
+  .safe-area-padding {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Scrollbar styling */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: theme('colors.gray.100');
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: theme('colors.gray.400');
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.gray.500');
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  [data-theme="dark"] {
+    color-scheme: dark;
+  }
+}

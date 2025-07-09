@@ -17,8 +17,8 @@ Simple Todo App เพื่อเรียนรู้ AI-assisted development 
 
 ```
 1. Feature planning → Create GitHub Issue (manual documentation)
-2. Local development → Claude Code with parallel sub-agents
-3. Git workflow → Manual commit, push, PR creation
+2. Round-based development → Claude Code with paired prompts per round
+3. Git workflow → Manual test and commit per round
 4. Code review → Optional @claude review in PR comments
 5. Deploy → Manual or simple automation
 ```
@@ -54,36 +54,114 @@ Simple Todo App เพื่อเรียนรู้ AI-assisted development 
 
 ### Sub-Agent Templates for Local Claude Code
 
-#### Basic CRUD Feature Pattern:
+#### Basic CRUD Feature Pattern - 4 Paired Sub-Agents:
 
 ```
-สร้าง Todo App ด้วย parallel sub-agents:
+สร้าง Todo App ด้วย 4 คู่ของ parallel sub-agents:
 
 Context: อ่าน CLAUDE.md นี้เพื่อเข้าใจ project requirements
 
-Task 1: Project Setup Agent
-- Next.js 14 project structure
-- Tailwind CSS + DaisyUI configuration
-- TypeScript setup
-- Basic folder organization
+## 🔧 Pair 1: Foundation Setup (Priority: High)
+Sub-Agent A: Complete Next.js App Router setup
+- Create app/layout.tsx with root layout and metadata
+- Setup proper HTML structure and viewport settings
+- Configure TypeScript and Next.js 14 App Router
 
-Task 2: UI Components Agent
-- TodoItem component (display, toggle, delete)
-- TodoList component (container + filtering)
-- AddTodo component (input form + validation)
-- FilterTabs component (All/Active/Completed)
+Sub-Agent B: Setup Tailwind CSS configuration
+- Create tailwind.config.js with DaisyUI plugin
+- Create app/globals.css with Tailwind directives
+- Configure responsive breakpoints and custom colors
 
-Task 3: Data Management Agent
-- localStorage utility functions
-- CRUD operations (create, read, update, delete)
-- TypeScript interfaces and types
-- Data validation logic
+Benefits: Related functionality, independent files, compatible timeline
 
-Task 4: Integration Agent
-- Connect all components to data layer
-- Test complete user workflow
-- Ensure responsive design works
-- Fix any integration issues
+## 📊 Pair 2: Data Layer (Priority: High)
+Sub-Agent A: Create TypeScript interfaces
+- Build lib/types.ts with Todo interface and TodoFilter type
+- Define strict typing for all data structures
+- Export types for component usage
+
+Sub-Agent B: Implement localStorage utilities
+- Build lib/storage.ts with CRUD operations
+- Implement data persistence and retrieval
+- Add error handling and validation logic
+
+Benefits: Related functionality, independent files, Task B uses types from Task A
+
+## 🎯 Pair 3: Core Components (Priority: Medium)
+Sub-Agent A: Create TodoItem component
+- Build components/TodoItem.tsx with display, toggle, delete
+- Implement responsive design with mobile-first approach
+- Add proper event handlers and TypeScript props
+
+Sub-Agent B: Create AddTodo component
+- Build components/AddTodo.tsx with input validation
+- Implement submit handling and form validation
+- Add proper UX feedback and error states
+
+Benefits: Related functionality, independent files, both use types from Pair 2
+
+## 🔗 Pair 4: Final Integration (Priority: Low)
+Sub-Agent A: Create FilterTabs component
+- Build components/FilterTabs.tsx with All/Active/Completed
+- Implement filtering logic and active state styling
+- Add touch-friendly mobile interactions
+
+Sub-Agent B: Create main page integration
+- Build app/page.tsx connecting all components
+- Implement complete data flow and state management
+- Test responsive design and complete user workflow
+
+Benefits: Related functionality, Task B depends on Task A + all previous components
+
+## 🔄 Round-Based Development Workflow:
+
+### Implementation Strategy: CLAUDE → PROMPT → TEST → COMMIT
+
+**Development Cycle Pattern:**
+# Round 1 (Foundation) → claude → [paired prompt] → manual test → git commit
+# Round 2 (Core) → claude → [paired prompt] → manual test → git commit
+# Round 3 (Features) → claude → [paired prompt] → manual test → git commit
+# Round 4 (Integration) → claude → [paired prompt] → manual test → git commit → Done!
+
+### Round Execution Process:
+
+**🔧 ROUND 1: Foundation Setup**
+- **Prompt**: "สร้าง Next.js App Router + Tailwind CSS foundation ตาม CLAUDE.md spec"
+- **Goal**: Establish Next.js App Router + Tailwind CSS foundation
+- **Test Requirements**: Dev server starts, Tailwind works, TypeScript compiles
+- **Commit**: "feat: setup Next.js App Router and Tailwind CSS foundation"
+
+**📊 ROUND 2: Data Layer**
+- **Prompt**: "สร้าง TypeScript interfaces + localStorage utilities ตาม CLAUDE.md spec"
+- **Goal**: Create TypeScript interfaces + localStorage utilities
+- **Test Requirements**: Types export correctly, storage functions work
+- **Commit**: "feat: implement TypeScript interfaces and localStorage utilities"
+
+**🎯 ROUND 3: Core Components**
+- **Prompt**: "สร้าง TodoItem + AddTodo components ตาม CLAUDE.md spec"
+- **Goal**: Build TodoItem + AddTodo components
+- **Test Requirements**: Components render, props work, responsive design
+- **Commit**: "feat: create TodoItem and AddTodo components"
+
+**🔗 ROUND 4: Final Integration**
+- **Prompt**: "สร้าง FilterTabs + Main page integration ตาม CLAUDE.md spec"
+- **Goal**: Complete FilterTabs + Main page integration
+- **Test Requirements**: Full CRUD works, responsive across devices
+- **Commit**: "feat: complete FilterTabs and main page integration"
+
+### Quality Gates per Round:
+- ✅ TypeScript compilation successful
+- ✅ Manual testing passes
+- ✅ Mobile-first design works
+- ✅ Components integrate properly
+- ✅ PROGRESS.md updated
+
+### Workflow Benefits:
+1. **Token Management**: 2 agents per round reduces context usage
+2. **Timeout Prevention**: Smaller scope prevents timeouts
+3. **Clear Dependencies**: Each pair has defined prerequisites
+4. **Testing Points**: Test after each paired prompt completion
+5. **Progress Tracking**: Update PROGRESS.md after each commit
 
 Deliverable: Working todo app ที่ทำงานได้ครบถ้วน
 ```
@@ -123,21 +201,42 @@ Deliverable: Enhanced todo app พร้อม advanced features
 
 ## Git Workflow Commands
 
-### Feature Development Flow:
+### Round-Based Development Flow:
 
 ```bash
-# Start new feature
+# Start feature branch
 git checkout -b feature/todo-crud
-# OR
-git checkout -b feature/todo-enhancement
 
-# After Claude Code development
+# ROUND 1: Foundation Setup
+# Prompt: "สร้าง Next.js App Router + Tailwind CSS foundation ตาม CLAUDE.md spec"
+# [Execute paired sub-agents]
+npm run dev  # Manual test
 git add .
-git commit -m "feat: implement todo CRUD with parallel sub-agents"
-# OR
-git commit -m "feat: add edit and drag-drop functionality"
+git commit -m "feat: setup Next.js App Router and Tailwind CSS foundation"
 
-# Push to GitHub
+# ROUND 2: Data Layer
+# Prompt: "สร้าง TypeScript interfaces + localStorage utilities ตาม CLAUDE.md spec"
+# [Execute paired sub-agents]
+npm run dev  # Manual test
+git add .
+git commit -m "feat: implement TypeScript interfaces and localStorage utilities"
+
+# ROUND 3: Core Components
+# Prompt: "สร้าง TodoItem + AddTodo components ตาม CLAUDE.md spec"
+# [Execute paired sub-agents]
+npm run dev  # Manual test
+git add .
+git commit -m "feat: create TodoItem and AddTodo components"
+
+# ROUND 4: Final Integration
+# Prompt: "สร้าง FilterTabs + Main page integration ตาม CLAUDE.md spec"
+# [Execute paired sub-agents]
+npm run dev  # Manual test
+git add .
+git commit -m "feat: complete FilterTabs and main page integration"
+
+# Final validation
+npm run build  # Production build test
 git push origin feature/todo-crud
 
 # Create PR manually in GitHub UI
@@ -295,11 +394,12 @@ export const todoStorage = {
 
 ## Development Rules
 
-1. **Feature-Complete**: Finish each phase completely before moving to next
-2. **Test Manually**: Verify functionality works before git commit
+1. **Round-Based Development**: Complete each round before moving to next
+2. **Test After Each Round**: Manual testing required before each commit
 3. **Mobile First**: Design and test on mobile viewport first
-4. **Git Discipline**: Clear commit messages, logical commits
-5. **Documentation**: Update README with completed features
+4. **Git Discipline**: One commit per round with clear messages
+5. **Progress Tracking**: Update PROGRESS.md after each round completion
+6. **Quality Gates**: All TypeScript errors must be resolved before commit
 
 ## Success Criteria
 
@@ -344,7 +444,39 @@ export const todoStorage = {
 ## Local Development Tips
 
 1. **Context Management**: อ่าน CLAUDE.md ในทุก prompt
-2. **Sub-Agent Clarity**: ให้ instructions ชัดเจนสำหรับแต่ละ agent
-3. **Integration Focus**: เสมอมี Integration Agent เป็น task สุดท้าย
-4. **Manual Testing**: ทดสอบทุก feature หลังจาก development
-5. **Git Discipline**: Commit เมื่อ feature สมบูรณ์
+2. **Round-Based Execution**: ทำทีละ round ตาม sequence
+3. **Paired Prompts**: ใช้ prompt ที่กำหนดไว้สำหรับแต่ละ round
+4. **Manual Testing**: ทดสอบหลังจาก development ของทุก round
+5. **Git Discipline**: Commit หลังจาก manual test เสร็จสิ้น
+6. **Progress Tracking**: Update PROGRESS.md ทุก round
+7. **Quality Control**: Resolve TypeScript errors ก่อน commit
+
+### Round Prompt Templates:
+
+- **ROUND 1**: "สร้าง Next.js App Router + Tailwind CSS foundation ตาม CLAUDE.md spec"
+- **ROUND 2**: "สร้าง TypeScript interfaces + localStorage utilities ตาม CLAUDE.md spec"
+- **ROUND 3**: "สร้าง TodoItem + AddTodo components ตาม CLAUDE.md spec"
+- **ROUND 4**: "สร้าง FilterTabs + Main page integration ตาม CLAUDE.md spec"
+
+## Quick Reference
+
+### Round Execution:
+
+1. "อ่าน CLAUDE.md และทำ Round 1: Foundation Setup ตาม paired sub-agent pattern"
+2. Manual test → git commit
+3. "อ่าน CLAUDE.md และทำ Round 2: Data Layer ตาม paired sub-agent pattern"
+4. Manual test → git commit
+5. "อ่าน CLAUDE.md และทำ Round 3: Core Components ตาม paired sub-agent pattern"
+6. Manual test → git commit
+7. "อ่าน CLAUDE.md และทำ Round 4: Integration ตาม paired sub-agent pattern"
+8. Manual test → git commit → Complete!
+
+### If Timeout:
+
+- Escape → "สรุปความคืบหน้า" → "ทำทีละ task"
+
+### Progress Tracking:
+
+```bash
+echo "Round X: [description] ✅" >> PROGRESS.md
+```
